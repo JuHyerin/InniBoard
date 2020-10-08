@@ -15,13 +15,9 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
-<style>
-.changeColor {
-	background-color: #bff0ff;
-}
-</style>
+
 <body>
-	<table id=boardList border="1">
+	<table border="1">
 	<th>제목</th>
 	<th>작성자</th>
 	<th>작성일</th>
@@ -38,6 +34,7 @@
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">게시물 작성</button>
 	
 </body>
+
 <script type="text/javascript">
 	function showDetail(postId){
 			location.href="${pageContext.request.contextPath}/postDetail?postid=" + postId;
