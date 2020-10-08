@@ -17,22 +17,24 @@
 </head>
 
 <body>
-	<table border="1">
-	<th>제목</th>
-	<th>작성자</th>
-	<th>작성일</th>
-	
-	<%while(posts.next()){ %>
-		<tr onclick=showDetail(<%=posts.getInt("post_id")%>) style="cursor:pointer">
-		    <td><%=posts.getString("title")%></td>
-		    <td><%=posts.getString("writer")%></td>
-		    <td><%=posts.getDate("created_at")%></td>
-		</tr>
-	<%} %>
-	</table>
-	
+<div>
+	<div>	
+		<table border="1">
+		<th>제목</th>
+		<th>작성자</th>
+		<th>작성일</th>
+		
+		<%while(posts.next()){ %>
+			<tr onclick=showDetail(<%=posts.getInt("post_id")%>) style="cursor:pointer">
+			    <td><%=posts.getString("title")%></td>
+			    <td><%=posts.getString("writer")%></td>
+			    <td><%=posts.getDate("created_at")%></td>
+			</tr>
+		<%} %>
+		</table>
+	</div>
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">게시물 작성</button>
-	
+</div>
 </body>
 
 <script type="text/javascript">
