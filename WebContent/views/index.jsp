@@ -1,11 +1,12 @@
-<%@ page import="model.Post" %>
-<%@ page import="java.util.List" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.util.Date" %>
+
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
-	List<Post> posts = (List<Post>)request.getAttribute("posts");
+	ResultSet posts = (ResultSet)request.getAttribute("posts");
 %>
 
 <!DOCTYPE html>
@@ -14,17 +15,42 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
+<style>
+.changeColor {
+	background-color: #bff0ff;
+}
+</style>
 <body>
-	<c:forEach var="post" items="${posts}">
-		id: <c:out value="${post.id}"/><br/>
-		title: <c:out value="${post.title}"/><br/>
-		contents: <c:out value="${post.contents}"/><br/>
-		created at: <c:out value="${post.createdAt}"/><br/>
-		updated at: <c:out value="${post.updatedAt}"/><br/>
-		deleted at: <c:out value="${post.deletedAt}"/><br/>
-		is deleted: <c:out value="${post.isDeleted}"/><br/>
-	</c:forEach>
+	<table id=boardList border="1">
+	<th>제목</th>
+	<th>작성자</th>
+	<th>작성일</th>
+	
+	<%while(posts.next()){ %>
+		<tr><!-- 첫번째 줄 시작 -->
+		    <td><%=posts.getString("title")%></td>
+		    <td><%=posts.getString("writer")%></td>
+		    <td><%=posts.getDate("created_at")%></td>
+		</tr><!-- 첫번째 줄 끝 -->
+	<%} %>
+	</table>
 	
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">게시물 작성</button>
+	
 </body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		changeColor();
+		clickTd();
+		clickTr();
+	})
+		
+	function changeColor(){
+		$('#boardList tr').mouseover(function(){
+				$(this).addClass('changeColor');
+			}).mouseout(function() {
+				$(this).removeClass('changeColor');
+			});
+	}
+</script>
 </html>

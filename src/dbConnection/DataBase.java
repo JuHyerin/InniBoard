@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.Post;
 
 public class DataBase {
@@ -50,31 +49,20 @@ public class DataBase {
 		}
 	}
 	
-	public List<Post> getAllPost() {
-		String sql = "select * from post";
+	public ResultSet getAllPost() {
+		String sql = "select * from post order by created_at desc;";
 		Statement stmt = null;
 		ResultSet rs = null;
 		List<Post> posts = new ArrayList<>();
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				Post post = new Post();
-				post.setId(rs.getInt("post_id"));
-				post.setTitle(rs.getString("title"));
-				post.setContents(rs.getString("contents"));
-				post.setCreatedAt(rs.getDate("created_at"));
-				post.setUpdatedAt(rs.getDate("updated_at"));
-				post.setDeletedAt(rs.getDate("deleted_at"));
-				post.setIsDeleted(rs.getBoolean("is_deleted"));
-				
-				posts.add(post);
-			}
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return posts;
+		return rs;
 	}
 	
 	
