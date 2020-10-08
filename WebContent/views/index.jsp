@@ -27,11 +27,11 @@
 	<th>작성일</th>
 	
 	<%while(posts.next()){ %>
-		<tr><!-- 첫번째 줄 시작 -->
+		<tr onclick=showDetail(<%=posts.getInt("post_id")%>) style="cursor:pointer">
 		    <td><%=posts.getString("title")%></td>
 		    <td><%=posts.getString("writer")%></td>
 		    <td><%=posts.getDate("created_at")%></td>
-		</tr><!-- 첫번째 줄 끝 -->
+		</tr>
 	<%} %>
 	</table>
 	
@@ -39,18 +39,8 @@
 	
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		changeColor();
-		clickTd();
-		clickTr();
-	})
-		
-	function changeColor(){
-		$('#boardList tr').mouseover(function(){
-				$(this).addClass('changeColor');
-			}).mouseout(function() {
-				$(this).removeClass('changeColor');
-			});
-	}
+	function showDetail(postId){
+			location.href="${pageContext.request.contextPath}/postDetail?postid=" + postId;
+		}
 </script>
 </html>

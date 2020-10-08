@@ -10,34 +10,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.PostDao;
-
-@WebServlet("/")
-public class TestServlet extends HttpServlet {
+@WebServlet("/postDetail")
+public class PostDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+   
+    public PostDetailServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public TestServlet() {
-		super();
-	}
-
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		response.setContentType("text/html;charset=utf-8");
-		
-		//response.getWriter().print(db.getConnectMsg());
-		PostDao postDao = new PostDao();
-		request.setAttribute("posts", postDao.getAllPost());
-		
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/views/index.jsp");
-		
+		dispatcher = context.getRequestDispatcher("/views/postDetail.jsp");
+	
 		dispatcher.forward(request, response);
 		
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

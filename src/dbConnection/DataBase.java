@@ -11,16 +11,17 @@ import model.Post;
 
 public class DataBase {
 	private Connection conn = null;
-	private String connectMsg = null;
 	
-	
-	public String getConnectMsg() {
-		return connectMsg;
+	public Connection getConn() {
+		return conn;
 	}
 
-	public void setConnectMsg(String connectMsg) {
-		this.connectMsg = connectMsg;
-	}
+	//private String connectMsg = null;
+	
+	//public String getConnectMsg() { return connectMsg; }
+	  
+	//public void setConnectMsg(String connectMsg) { this.connectMsg = connectMsg;}
+	 
 	
 	public void connectDatabase() {
 		try {
@@ -37,7 +38,7 @@ public class DataBase {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			this.setConnectMsg(conn.toString()+"<br/>"+"localhost:3306/jspdb 연동 성공");
+			//this.setConnectMsg(conn.toString()+"<br/>"+"localhost:3306/jspdb 연동 성공");
 		}
 	}
 
@@ -49,21 +50,7 @@ public class DataBase {
 		}
 	}
 	
-	public ResultSet getAllPost() {
-		String sql = "select * from post order by created_at desc;";
-		Statement stmt = null;
-		ResultSet rs = null;
-		List<Post> posts = new ArrayList<>();
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return rs;
-	}
+
 	
 	
 }
