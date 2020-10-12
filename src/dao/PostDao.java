@@ -33,10 +33,10 @@ public class PostDao {
 		return rs;
 	}
 	
-	public ResultSet getContentsBtId(int postId) {
+	public ResultSet getContentsById(int postId) {
 		db.connectDatabase();
 		
-		String sql = "select post_id, title, contents, writer, created_at, updated_at from post where post_id=" + postId;
+		String sql = "select post_id, title, contents, writer, created_at from post where post_id=" + postId;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {

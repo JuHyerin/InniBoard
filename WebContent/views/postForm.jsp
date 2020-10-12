@@ -1,23 +1,28 @@
+<%@ page import="java.sql.ResultSet" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
 
-<% request.setCharacterEncoding("utf-8"); %>
+<%	request.setCharacterEncoding("utf-8"); %>
+<%-- <%	ResultSet post = (ResultSet)request.getAttribute("postData");%> --%>
+
 <html>
 <head>
 <meta charset="utf-8">
 <title>Insert title here</title>
-</head>
+</head> 
 <body>
-	<form action="${pageContext.request.contextPath}/post" method="post">
+	<form action="${pageContext.request.contextPath}/create" method="post">
 	<p>
 		<label>제목</label>
-		<input type="text" name="title" value="제목 입력">
+		<input type="text" name="title" value="제목입력">
+		<%-- <input type="text" name="title" value="<%=post.getString("title") %>"> --%>
 	</p>
 	<p>
 		<label>내용</label>
-		<input type="text" name="contents" value="내용 입력">
+		<input type="text" name="contents" value="제목입력">
+		<%-- <input type="text" name="contents" value="<%=post.getString("contents") %>"> --%>
 	</p>
 	
 	<p>

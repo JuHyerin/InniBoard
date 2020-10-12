@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import dao.PostDao;
 
 
-@WebServlet("/post")
-public class PostServlet extends HttpServlet {
+@WebServlet("/create")
+public class PostCreateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-    public PostServlet() {
+    public PostCreateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

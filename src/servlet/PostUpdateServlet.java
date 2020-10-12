@@ -12,32 +12,33 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.PostDao;
 
-@WebServlet("/postDetail")
-public class PostDetailServlet extends HttpServlet {
+
+@WebServlet("/update")
+public class PostUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-   
-    public PostDetailServlet() {
+       
+
+    public PostUpdateServlet() {
         super();
     }
 
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		
 		int postId = Integer.parseInt(request.getParameter("postid"));
 		PostDao postDao = new PostDao();
-		request.setAttribute("postDetail", postDao.getContentsById(postId));
+		request.setAttribute("postData", postDao.getContentsById(postId));
 		
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/views/postDetail.jsp");
-	
-		dispatcher.forward(request, response);
+		dispatcher = context.getRequestDispatcher("/views/postForm.jsp");
 		
+		dispatcher.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	
 		doGet(request, response);
 	}
 

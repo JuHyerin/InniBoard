@@ -37,7 +37,7 @@ td#contents{
 	</tr>
 	<tr>
 		<td id="name">작성일</td>
-		<td><%=post.getDate("created_at")%></td>
+		<td><%=post.getTimestamp("created_at")%></td>
 	</tr>
 	<tr>
 		<td id="name">내용</td>
@@ -45,7 +45,7 @@ td#contents{
 	</tr>
 </table>
 
-<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">수정</button>
+<button type="button" onclick="location.href='${pageContext.request.contextPath}/update?postid=' + <%=post.getInt("post_id")%>">수정</button>
 <button type="button" onclick="location.href='${pageContext.request.contextPath}/'">목록</button>
 
 </body>
