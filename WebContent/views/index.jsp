@@ -1,3 +1,4 @@
+<%@page import="util.Paging"%>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.util.Date" %>
 
@@ -7,6 +8,7 @@
 
 <%
 	ResultSet posts = (ResultSet)request.getAttribute("posts");
+	Paging paging = (Paging)request.getAttribute("paging");
 %>
 
 <!DOCTYPE html>
@@ -15,7 +17,20 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
+<style>
+ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
 
+li {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    border : 0;
+    float: left;
+}
+</style>
 <body>
 <div>
 	<div>	
@@ -33,7 +48,15 @@
 		<%} %>
 		</table>
 	</div>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">게시물 작성</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">게시물 작성</button> <br/>
+	
+	
+
+	<button type="button" onclick="previousBlock">이전</button>
+	<c:forEach var="page" begin="${paging.startPageNo}" end="${paging.endPageNo}">
+		<a href="${pageContext.request.contextPath}/?page=${page}">${page}</a>
+	</c:forEach>
+	<button type="button" onclick="nextBlock">이후</button>	
 </div>
 </body>
 
@@ -41,5 +64,6 @@
 	function showDetail(postId){
 			location.href="${pageContext.request.contextPath}/postDetail?postid=" + postId;
 		}
+	
 </script>
 </html>
