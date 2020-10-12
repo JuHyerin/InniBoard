@@ -28,7 +28,7 @@ public class TestServlet extends HttpServlet {
 		//page parameter 할당
 		String pageParam = request.getParameter("page");
 		int page;
-		if(pageParam==null || pageParam.length()==0) {
+		if(pageParam==null || pageParam.length()==0 || pageParam.equals("0")) {
 			pageParam = "1"; //초기화
 		}
 		page = Integer.parseInt(pageParam);

@@ -51,12 +51,13 @@ li {
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">게시물 작성</button> <br/>
 	
 	
-
-	<button type="button" onclick="previousBlock">이전</button>
+	<button type="button" onclick="goBeginPage()">처음</button>
+	<button type="button" onclick="goPreviousBlock()">이전</button>
 	<c:forEach var="page" begin="${paging.startPageNo}" end="${paging.endPageNo}">
 		<a href="${pageContext.request.contextPath}/?page=${page}">${page}</a>
 	</c:forEach>
-	<button type="button" onclick="nextBlock">이후</button>	
+	<button type="button" onclick="goNextBlock()">이후</button>	
+	<button type="button" onclick="goFinalPage()">끝</button>
 </div>
 </body>
 
@@ -64,6 +65,18 @@ li {
 	function showDetail(postId){
 			location.href="${pageContext.request.contextPath}/postDetail?postid=" + postId;
 		}
+	function goBeginPage(){
+		location.href="${pageContext.request.contextPath}/?page=1";
+	}
+	function goPreviousBlock(){
+		location.href="${pageContext.request.contextPath}/?page=" + (${paging.startPageNo}-1);
+	}
+	function goNextBlock(){
+		location.href="${pageContext.request.contextPath}/?page=" + (${paging.endPageNo}+1)
+	}
+	function goFinalPage(){
+		location.href="${pageContext.request.contextPath}/?page=" + ${paging.totalPages};
+	}
 	
 </script>
 </html>
