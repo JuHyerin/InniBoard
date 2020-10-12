@@ -1,8 +1,12 @@
 package dao;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import dbConnection.DataBase;
 
@@ -94,5 +98,25 @@ public class PostDao {
 		db.disconnectDataBase();
 		
 		return rs;
+	}
+	
+	public void	insertPost(String title, String writer, String contents) {
+		db.connectDatabase();
+		String sql = "insert into post (title, writer, created_at, contents) values (?,?,?,?)";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = db.getConn().prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, writer);
+			pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+			pstmt.setString(4, contents);
+			
+			pstmt.execute();
+			System.out.println("insert ¿Ï·á");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

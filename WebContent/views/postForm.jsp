@@ -1,24 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+
 <!DOCTYPE html>
+
+<% request.setCharacterEncoding("utf-8"); %>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="utf-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="post" method="post">
+	<form action="${pageContext.request.contextPath}/post" method="post">
 	<p>
-		<strong>Á¦¸ñ</strong>
-		<input type="text" name="title" value="Á¦¸ñ ÀÔ·Â">
+		<label>ì œëª©</label>
+		<input type="text" name="title" value="ì œëª© ìž…ë ¥">
 	</p>
 	<p>
-		<strong>³»¿ë</strong>
-		<input type="text" name="contents" value="³»¿ë ÀÔ·Â">
+		<label>ë‚´ìš©</label>
+		<input type="text" name="contents" value="ë‚´ìš© ìž…ë ¥">
 	</p>
 	
 	<p>
-		<input type="submit" value="µî·Ï">
+		<input type="submit" value="ë“±ë¡">
 	</p>
 </form>
 </body>
