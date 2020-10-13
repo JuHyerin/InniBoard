@@ -29,9 +29,17 @@ public class PostCreateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
-		
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
+		
+		//회원여부 확인 후 로그인 화면으로 이동
+		String user = request.getParameter("user");
+		if(user==null || user.equals("")) {
+			dispatcher = context.getRequestDispatcher("/views/login.jsp");
+			dispatcher.forward(request, response);
+			return;
+		}
+		
 		dispatcher = context.getRequestDispatcher("/views/postForm.jsp");
 		
 		dispatcher.forward(request, response);

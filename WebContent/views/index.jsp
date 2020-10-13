@@ -9,6 +9,11 @@
 <%
 	ResultSet posts = (ResultSet)request.getAttribute("posts");
 	Paging paging = (Paging)request.getAttribute("paging");
+	ResultSet user = (ResultSet)request.getAttribute("user");
+	String id = null;
+	if(user!=null){
+		id = user.getString("id");
+	}
 %>
 
 <!DOCTYPE html>
@@ -35,7 +40,10 @@
 		<%} %>
 		</table>
 	</div>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/create'">게시물 작성</button> <br/>
+	<div>
+		<button type="button" onclick="location.href='${pageContext.request.contextPath}/create'">게시물 작성</button> <br/>
+		<input	type="hidden" name="user" value="<%=id%>">
+	</div>
 	
 	
 	<button type="button" onclick="goBeginPage()">처음</button>
