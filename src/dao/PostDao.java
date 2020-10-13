@@ -111,12 +111,52 @@ public class PostDao {
 			pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
 			pstmt.setString(4, contents);
 			
-			pstmt.execute();
+			pstmt.executeUpdate();
 			System.out.println("insert 완료");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		db.disconnectDataBase();
+	}
+
+	public void updatePost(int postId, String title, String contents) {
+		db.connectDatabase();
+		String sql = "update post set title=?, contents=?, created_at=? where post_id=?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = db.getConn().prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, contents);
+			pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+			pstmt.setInt(4, postId);
+			
+			pstmt.executeUpdate();
+			System.out.println("update 완료");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.disconnectDataBase();
+	
+	}
+
+	public void deletePost(int postId) {
+		db.connectDatabase();
+		String sql = "delete from post where post_id=?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = db.getConn().prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			pstmt.executeUpdate();
+			System.out.println("delete 완료");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.disconnectDataBase();
 	}
 }

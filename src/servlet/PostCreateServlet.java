@@ -41,17 +41,19 @@ public class PostCreateServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
-		
-		PostDao postDao = new PostDao();
-		postDao.insertPost(request.getParameter("title"), "id123", request.getParameter("contents"));
-		
-		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/");
-		
-		dispatcher.forward(request, response);
+		/*
+		 * request.setCharacterEncoding("utf-8");
+		 * response.setContentType("text/html;charset=utf-8");
+		 * 
+		 * PostDao postDao = new PostDao();
+		 * postDao.insertPost(request.getParameter("title"), "id123",
+		 * request.getParameter("contents"));
+		 * 
+		 * ServletContext context = getServletContext(); RequestDispatcher dispatcher;
+		 * dispatcher = context.getRequestDispatcher("/");
+		 * 
+		 * dispatcher.forward(request, response);
+		 */
 	}
 
 }

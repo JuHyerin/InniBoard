@@ -17,20 +17,7 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
-<style>
-ul {
-    list-style:none;
-    margin:0;
-    padding:0;
-}
 
-li {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    border : 0;
-    float: left;
-}
-</style>
 <body>
 <div>
 	<div>	
@@ -48,7 +35,7 @@ li {
 		<%} %>
 		</table>
 	</div>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/post'">게시물 작성</button> <br/>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/create'">게시물 작성</button> <br/>
 	
 	
 	<button type="button" onclick="goBeginPage()">처음</button>

@@ -46,6 +46,7 @@ td#contents{
 </table>
 
 <button type="button" onclick="location.href='${pageContext.request.contextPath}/update?postid=' + <%=post.getInt("post_id")%>">수정</button>
+<button type="button" onclick="location.href='${pageContext.request.contextPath}/delete?postid=' + <%=post.getInt("post_id")%>">삭제</button>
 <button type="button" onclick="location.href='${pageContext.request.contextPath}/'">목록</button>
 
 </body>
