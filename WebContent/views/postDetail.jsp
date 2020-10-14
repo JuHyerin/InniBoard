@@ -7,7 +7,9 @@
     
 <%
 	ResultSet post = (ResultSet)request.getAttribute("postDetail");
-
+	String writer = post.getString("writer");
+	String userId = (String)session.getAttribute("userId");
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -44,10 +46,20 @@ td#contents{
 		<td id="contents"><%=post.getString("contents")%></td>
 	</tr>
 </table>
-
-<button type="button" onclick="location.href='${pageContext.request.contextPath}/update?postid=' + <%=post.getInt("post_id")%>">수정</button>
-<button type="button" onclick="location.href='${pageContext.request.contextPath}/delete?postid=' + <%=post.getInt("post_id")%>">삭제</button>
+<% if(writer.equals(userId)){ %>
+<div id="divUpdDelBtns">
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/update?postid=' + <%=post.getInt("post_id")%>">수정</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/delete?postid=' + <%=post.getInt("post_id")%>">삭제</button>
+</div>
+<%} %>
 <button type="button" onclick="location.href='${pageContext.request.contextPath}/'">목록</button>
 
 </body>
+<script type="text/javascript">
+<%-- if(<%=(String)session.getAttribute("userId")%>!=<%=post.getString("writer")%>){
+	document.getElementById("divUpdDelBtns").style.display = "none"; // Hide
+}
+ --%>
+
+</script>
 </html>

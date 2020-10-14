@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.PostDao;
 
@@ -18,7 +19,6 @@ public class PostDeleteServlet extends HttpServlet {
     
     public PostDeleteServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 
@@ -26,19 +26,34 @@ public class PostDeleteServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		
+		//get
 		int postId = Integer.parseInt(request.getParameter("postid"));
+		
+		//set
+		HttpSession userSession = request.getSession();	
+		userSession.setAttribute("nextPage", "/");
+		
+		//delete
 		PostDao postDao = new PostDao();
 		postDao.deletePost(postId);
 		
+		//dispatcher
 		ServletContext context = getServletContext();
+		RequestDispatcher dispatcher;
+		dispatcher = context.getRequestDispatcher("/login");	
+		dispatcher.forward(request, response);
+		
+		/*ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
 		dispatcher = context.getRequestDispatcher("/");
 		
-		dispatcher.forward(request, response);
+		dispatcher.forward(request, response);*/
+		
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
