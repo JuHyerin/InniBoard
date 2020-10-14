@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.PostDao;
 
@@ -22,26 +23,19 @@ public class PostCreateServlet extends HttpServlet {
     
     public PostCreateServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		
+		HttpSession userSession = request.getSession();		
+		userSession.setAttribute("nextPage", "/views/postForm.jsp");
+		
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
-		
-		//회원여부 확인 후 로그인 화면으로 이동
-		String user = request.getParameter("user");
-		if(user==null || user.equals("")) {
-			dispatcher = context.getRequestDispatcher("/views/login.jsp");
-			dispatcher.forward(request, response);
-			return;
-		}
-		
-		dispatcher = context.getRequestDispatcher("/views/postForm.jsp");
-		
+		dispatcher = context.getRequestDispatcher("/login");	
 		dispatcher.forward(request, response);
 		
 	}

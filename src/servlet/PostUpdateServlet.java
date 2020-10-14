@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.PostDao;
 
@@ -26,15 +27,19 @@ public class PostUpdateServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		
+		//request get
 		int postId = Integer.parseInt(request.getParameter("postid"));
 		
+		//request set
 		PostDao postDao = new PostDao();
 		request.setAttribute("postData", postDao.getContentsById(postId));
-	
+		HttpSession userSession = request.getSession();	
+		userSession.setAttribute("nextPage", "/views/postForm.jsp");
+		
+		//dispatcher
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/views/postForm.jsp");
-		
+		dispatcher = context.getRequestDispatcher("/login");	
 		dispatcher.forward(request, response);
 	}
 
@@ -43,9 +48,11 @@ public class PostUpdateServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		
 		int postId = Integer.parseInt(request.getParameter("postid"));
+		HttpSession userSession = request.getSession();
+		String writer = (String)userSession.getAttribute("userId");
 		PostDao postDao = new PostDao();
 		if(postId == 0) {//insert
-			postDao.insertPost(request.getParameter("title"), "id123", request.getParameter("contents"));
+			postDao.insertPost(request.getParameter("title"), writer, request.getParameter("contents"));
 		}
 		else {//update
 			postDao.updatePost(postId, request.getParameter("title"), request.getParameter("contents"));

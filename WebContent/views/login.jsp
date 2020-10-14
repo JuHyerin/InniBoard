@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+    
+<% String url = (String)request.getAttribute("url"); %>
 <!DOCTYPE html>
 <html>
 <head>

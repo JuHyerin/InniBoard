@@ -1,6 +1,5 @@
 package dao;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,18 +8,17 @@ import dbConnection.DataBase;
 
 public class UserDao {
 	private DataBase db = new DataBase();
-	public ResultSet getUserById(String id) {
+	public ResultSet getUserById(String id,String pwd ) {
 		db.connectDatabase();
-		String sql = "select * from user where id like ?" ;
-		PreparedStatement pstmt = null;
+		String sql = "select * from user where id = '" + id + "' and pwd = '" + pwd + "'";
+		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = db.getConn().prepareStatement(sql);
-			pstmt.setString(1, );
-			rs = pstmt.executeQuery(sql);
+			stmt = db.getConn().createStatement();
+			rs = stmt.executeQuery(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			
 		}
 		db.disconnectDataBase();
 		return rs;
