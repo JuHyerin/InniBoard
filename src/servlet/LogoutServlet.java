@@ -1,9 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,33 +8,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-@WebServlet("/create")
-public class PostCreateServlet extends HttpServlet {
+@WebServlet("/logout")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
-    public PostCreateServlet() {
+     
+    public LogoutServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
+		HttpSession userSession = request.getSession();
+		String prevPage = request.getHeader("Referer");//이전페이지
 		
-		HttpSession userSession = request.getSession();		
-		userSession.setAttribute("nextPage", "/views/postForm.jsp");
-		
-		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/login");	
-		dispatcher.forward(request, response);
-		
+		if((Boolean)userSession.getAttribute("loginCheck") || userSession.getAttribute("loginCheck")!=null) {
+			//로그인 상태->로그아웃
+			userSession.invalidate();
+			//userSession.setAttribute("loginCheck", false); //로그아웃상태->세션
+			//userSession.setAttribute("userId",null);
+		}
+		response.sendRedirect(prevPage);//이전페이지로 이동
 	}
 
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

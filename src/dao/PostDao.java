@@ -36,7 +36,7 @@ public class PostDao {
 	public ResultSet getContentsById(int postId) {
 		db.connectDatabase();
 		
-		String sql = "select post_id, title, contents, writer, created_at from post where post_id=" + postId;
+		String sql = "select post_id, title, contents, writer, created_at, updated_at from post where post_id=" + postId;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -123,7 +123,8 @@ public class PostDao {
 
 	public void updatePost(int postId, String title, String contents) {
 		db.connectDatabase();
-		String sql = "update post set title=?, contents=?, created_at=? where post_id=?";
+		String sql = "update post set title=?, contents=?, updated_at=? where post_id=?";
+		//String sql = "update post set title=?, contents=? where post_id=?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = db.getConn().prepareStatement(sql);
@@ -138,6 +139,17 @@ public class PostDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		/*sql = "update post set updated_at=? where post_id=?";
+		try {
+			pstmt = db.getConn().prepareStatement(sql);
+			pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+			pstmt.executeUpdate();
+			System.out.println("update 시간 완료");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		
 		db.disconnectDataBase();
 	

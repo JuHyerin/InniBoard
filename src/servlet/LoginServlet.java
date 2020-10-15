@@ -28,7 +28,6 @@ public class LoginServlet extends HttpServlet {
 		HttpSession userSession = request.getSession();
 		//로그인 여부 확인용 변수
 		String userId = (String)userSession.getAttribute("userId");
-		String userPwd = (String)userSession.getAttribute("userPwd");
 		Boolean loginCheck = (Boolean)userSession.getAttribute("loginCheck");
 		
 		//request get
@@ -51,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		//로그일 상태가 아닐 경우 로그인 페이지로 이동
-		else if(isEmpty(userId) || isEmpty(userPwd) || loginCheck==false || loginCheck==null) {
+		else if(isEmpty(userId) || loginCheck==false || loginCheck==null) {
 			dispatcher = context.getRequestDispatcher("/views/login.jsp");
 			dispatcher.forward(request, response);
 			return;
@@ -98,7 +97,6 @@ public class LoginServlet extends HttpServlet {
 		if(idParam.equals(userId) && pwdParam.equals(userPwd)) {//로그인 성공(user!=null는 오류)
 			userSession.setAttribute("loginCheck", true); //로그인상태->세션
 			userSession.setAttribute("userId",userId);
-			userSession.setAttribute("userPwd", userPwd);
 			response.sendRedirect(prevPage);//이전페이지로 이동
 		}
 		else if(isEmpty(idParam) || isEmpty(pwdParam) //로그인 실패 

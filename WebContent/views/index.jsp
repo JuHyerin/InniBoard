@@ -9,11 +9,11 @@
 <%
 	ResultSet posts = (ResultSet)request.getAttribute("posts");
 	Paging paging = (Paging)request.getAttribute("paging");
-	ResultSet user = (ResultSet)request.getAttribute("user");
-	String id = null;
-	if(user!=null){
-		id = user.getString("id");
-	}
+// 	ResultSet user = (ResultSet)request.getAttribute("user");
+// 	String id = null;
+// 	if(user!=null){
+// 		id = user.getString("id");
+// 	}
 %>
 
 <!DOCTYPE html>
@@ -24,6 +24,16 @@
 </head>
 
 <body>
+<%if(session.getAttribute("loginCheck")==null || !(Boolean)session.getAttribute("loginCheck") ){ %>
+<div>
+	<a href="${pageContext.request.contextPath}/login">로그인</a>
+</div>
+<%} else if((Boolean)session.getAttribute("loginCheck")){%>
+<div>
+	<%=(String)session.getAttribute("userId") %>
+	<a href="${pageContext.request.contextPath}/logout"> 로그아웃</a>
+</div>
+<%} %>
 <div>
 	<div>	
 		<table border="1">
@@ -42,7 +52,7 @@
 	</div>
 	<div>
 		<button type="button" onclick="location.href='${pageContext.request.contextPath}/create'">게시물 작성</button> <br/>
-		<input	type="hidden" name="user" value="<%=id%>">
+		<%-- <input	type="hidden" name="user" value="<%=id%>"> --%>
 	</div>
 	
 	

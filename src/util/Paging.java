@@ -81,6 +81,7 @@ public class Paging {
 		}catch (ArithmeticException e) {//ArithmeticException: / by zero 처리
 			this.setStartPageNo(1);		
 		}
+		
 		int endPage = this.startPageNo + (this.blockSize - 1); //블럭의 마지막페이지 구하기
 		if(endPage > this.totalPages) { //마지막 블럭: 총페이지가 맨 마지막페이지에 도달하기 전에 끝남
 			endPage = this.totalPages;

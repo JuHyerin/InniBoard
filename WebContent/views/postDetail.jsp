@@ -1,3 +1,4 @@
+<%@page import="java.sql.Timestamp"%>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.util.Date" %>
 
@@ -7,6 +8,7 @@
     
 <%
 	ResultSet post = (ResultSet)request.getAttribute("postDetail");
+	post.next();
 	String writer = post.getString("writer");
 	String userId = (String)session.getAttribute("userId");
 	
@@ -26,8 +28,17 @@ td#contents{
 }
 </style>
 <body>
-<h1>post detail page</h1>
-<%post.next(); %>
+<%if(session.getAttribute("loginCheck")==null || !(Boolean)session.getAttribute("loginCheck") ){ %>
+<div>
+	<a href="${pageContext.request.contextPath}/login">로그인</a>
+</div>
+<%} else if((Boolean)session.getAttribute("loginCheck")){%>
+<div>
+	<%=(String)session.getAttribute("userId") %>
+	<a href="${pageContext.request.contextPath}/logout"> 로그아웃</a>
+</div>
+<%} %>
+
 <table border="1">
 	<tr>
 		<td id="name">제목</td>
@@ -39,13 +50,21 @@ td#contents{
 	</tr>
 	<tr>
 		<td id="name">작성일</td>
+		<%if((Timestamp)post.getTimestamp("updated_at")==null 
+				|| post.getTimestamp("updated_at").equals("0000-00-00 00:00:00")){ %>
 		<td><%=post.getTimestamp("created_at")%></td>
+		
+		<%}else { %>
+		<td><%=post.getTimestamp("updated_at")%></td>
+		<%} %>
 	</tr>
+	
 	<tr>
 		<td id="name">내용</td>
 		<td id="contents"><%=post.getString("contents")%></td>
 	</tr>
 </table>
+
 <% if(writer.equals(userId)){ %>
 <div id="divUpdDelBtns">
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/update?postid=' + <%=post.getInt("post_id")%>">수정</button>

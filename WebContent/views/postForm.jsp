@@ -29,8 +29,8 @@
 		<input type="text" name="title" value="<%=title%>">
 		<%if(post!=null){ %>
 		<input type="hidden" name="postid" value="<%=post.getInt("post_id")%>">
-		<%}else{%>
-		<input type="hidden" name="postid" value="0">
+		<%}else{//create or update%>
+		<input type="hidden" name="postid" value="0"> 
 		<%} %>
 	</p>
 	<p>
