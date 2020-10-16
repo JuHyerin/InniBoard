@@ -37,7 +37,10 @@ public class LoginServlet extends HttpServlet {
 		
 		//request set
 		userSession.setAttribute("prevPage", prevPage);
-		request.setAttribute("postData", postData);
+		if(nextPage==null) {//홈에서 로그인 시도했을 경우
+			nextPage = "/";
+			userSession.setAttribute("nextPage", nextPage);
+		}
 		
 		//dispatcher
 		ServletContext context = getServletContext();
@@ -68,42 +71,49 @@ public class LoginServlet extends HttpServlet {
 		//loginForm의 폼데이터, db 접근용 변수
 		String idParam = request.getParameter("id");
 		String pwdParam = request.getParameter("pwd");
-		
+
 		//dispatcher
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
+		
+		if(isEmpty(idParam) || isEmpty(pwdParam)) {//빈칸오류
+			System.out.println("빈칸 오류");
+			userSession.setAttribute("loginCheck", false);
+			dispatcher = context.getRequestDispatcher("/views/login.jsp");
+			dispatcher.forward(request, response);//기존 req,res 정보 유지
+			return;
+		}
 		
 		//db 접근하여 user정보 일치 여부 확인 (일치->if, 불일치->elseif)
 		UserDao userDao = new UserDao();
 		ResultSet user = userDao.getUserById(idParam, pwdParam);
 		String userId=null;
 		String userPwd=null;
+		
 		try {
-			user.next();
+			if(!user.next()) {//user==null로 확인하면 안됨.
+				System.out.println("로그인 실패");
+				userSession.setAttribute("loginCheck", false);
+				dispatcher = context.getRequestDispatcher("/views/login.jsp");
+				dispatcher.forward(request, response);//기존 req,res 정보 유지
+				return;
+			}
+			
 			userId = user.getString("id");
 			userPwd = user.getString("pwd");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println(userId+userPwd);
 		
-		//request get
-		String prevPage = (String)userSession.getAttribute("prevPage");//성공 후 이동할 이전페이지
-		ResultSet postData = (ResultSet)request.getAttribute("postData");//수정 전 데이터
-		
-		//request set
-		request.setAttribute("user", user); //회원정보->req
-		request.setAttribute("postData", postData);//수정되기 전 데이터->req
-		
-		if(idParam.equals(userId) && pwdParam.equals(userPwd)) {//로그인 성공(user!=null는 오류)
+		//String prevPage = (String)userSession.getAttribute("prevPage");//성공 후 이동할 이전페이지
+		String nextPage = (String)userSession.getAttribute("nextPage");//성공 후 이동할 이후페이지
+		if(user!=null) {//로그인 성공(user!=null는 오류)
 			userSession.setAttribute("loginCheck", true); //로그인상태->세션
 			userSession.setAttribute("userId",userId);
-			response.sendRedirect(prevPage);//이전페이지로 이동
-		}
-		else if(isEmpty(idParam) || isEmpty(pwdParam) //로그인 실패 
-				|| !idParam.equals(userId) || !pwdParam.equals(userPwd)) {//(user==null은 오류)
-			System.out.println("로그인 실패");
-			dispatcher = context.getRequestDispatcher("/views/login.jsp");
-			dispatcher.forward(request, response);//기존 req,res 정보 유지
+			//response.sendRedirect(prevPage);//이전페이지로 이동
+			dispatcher = context.getRequestDispatcher(nextPage);
+			dispatcher.forward(request, response);
 		}
 	} 
 	

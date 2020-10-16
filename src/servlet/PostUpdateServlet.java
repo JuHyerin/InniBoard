@@ -33,13 +33,11 @@ public class PostUpdateServlet extends HttpServlet {
 		//request set
 		PostDao postDao = new PostDao();
 		request.setAttribute("postData", postDao.getContentsById(postId));
-		HttpSession userSession = request.getSession();	
-		userSession.setAttribute("nextPage", "/views/postForm.jsp");
-		
+			
 		//dispatcher
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/login");	
+		dispatcher = context.getRequestDispatcher("/views/postForm.jsp");	
 		dispatcher.forward(request, response);
 	}
 

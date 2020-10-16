@@ -20,6 +20,7 @@ public class UserDao {
 			e.printStackTrace();
 			
 		}
+		
 		db.disconnectDataBase();
 		return rs;
 	}
