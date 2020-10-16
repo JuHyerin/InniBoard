@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.PostDao;
 import util.Paging;
@@ -37,13 +38,12 @@ public class TestServlet extends HttpServlet {
 	
 		Paging paging = new Paging(page);//현재페이지 페이징객체 생성
 		paging.setTotalData(postDao.countAllPost()); //페이징객체 설정
-		/*
-		 * if(page > paging.getTotalPages()) {//page param이 총페이지보다 많을 예외
-		 * paging.setPageNo(1); }
-		 */
-		
+	
+		//set request
 		request.setAttribute("paging", paging);
 		request.setAttribute("posts", postDao.getPagedPost(paging.getFirstData(), paging.getPageSize()));
+		request.setAttribute("contentPage", "/views/contents/postList.jsp");
+	
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
 		dispatcher = context.getRequestDispatcher("/views/index.jsp");

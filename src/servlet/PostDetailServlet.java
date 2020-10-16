@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.PostDao;
 
@@ -27,10 +28,13 @@ public class PostDetailServlet extends HttpServlet {
 		int postId = Integer.parseInt(request.getParameter("postid"));
 		PostDao postDao = new PostDao();
 		request.setAttribute("postDetail", postDao.getContentsById(postId));
+		HttpSession userSession = request.getSession();
+		userSession.setAttribute("nextPage", "/postDetail?postid="+postId);
 		
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/views/postDetail.jsp");
+		request.setAttribute("contentPage", "/views/contents/postDetail.jsp");
+		dispatcher = context.getRequestDispatcher("/views/index.jsp");
 	
 		dispatcher.forward(request, response);
 		

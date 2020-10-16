@@ -1,6 +1,9 @@
 package servlet;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +23,7 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession userSession = request.getSession();
 		String prevPage = request.getHeader("Referer");//이전페이지
+		//String nextPage = (String)userSession.getAttribute("nextPage");
 		
 		if((Boolean)userSession.getAttribute("loginCheck") || userSession.getAttribute("loginCheck")!=null) {
 			//로그인 상태->로그아웃
@@ -28,6 +32,8 @@ public class LogoutServlet extends HttpServlet {
 			//userSession.setAttribute("userId",null);
 		}
 		response.sendRedirect(prevPage);//이전페이지로 이동
+		//response.sendRedirect(request.getContextPath() + nextPage); //detail에서 로그아웃하면 디테일로 돌아가기
+	
 	}
 
 

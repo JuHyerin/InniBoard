@@ -83,7 +83,7 @@ public class PostDao {
 	public ResultSet getPagedPost(int startIndex, int size) {
 		db.connectDatabase();
 		
-		String sql = "select post_id, title, writer, created_at from post order by created_at desc limit " + startIndex +","+ size;
+		String sql = "select post_id, title, writer, created_at from post where is_deleted=0 order by created_at desc limit " + startIndex +","+ size;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -157,11 +157,13 @@ public class PostDao {
 
 	public void deletePost(int postId) {
 		db.connectDatabase();
-		String sql = "delete from post where post_id=?";
+		//String sql = "delete from post where post_id=?";
+		String sql = "update post set deleted_at=?, is_deleted=1 where post_id=?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = db.getConn().prepareStatement(sql);
-			pstmt.setInt(1, postId);
+			pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+			pstmt.setInt(2, postId);
 			pstmt.executeUpdate();
 			System.out.println("delete ¿Ï·á");
 		} catch (SQLException e) {

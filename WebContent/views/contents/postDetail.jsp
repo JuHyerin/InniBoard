@@ -28,17 +28,6 @@ td#contents{
 }
 </style>
 <body>
-<%if(session.getAttribute("loginCheck")==null || !(Boolean)session.getAttribute("loginCheck") ){ %>
-<div>
-	<a href="${pageContext.request.contextPath}/login">로그인</a>
-</div>
-<%} else if((Boolean)session.getAttribute("loginCheck")){%>
-<div>
-	<%=(String)session.getAttribute("userId") %>
-	<a href="${pageContext.request.contextPath}/logout"> 로그아웃</a>
-</div>
-<%} %>
-
 <table border="1">
 	<tr>
 		<td id="name">제목</td>

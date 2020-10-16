@@ -31,12 +31,12 @@ public class LoginServlet extends HttpServlet {
 		Boolean loginCheck = (Boolean)userSession.getAttribute("loginCheck");
 		
 		//request get
-		ResultSet postData = (ResultSet)request.getAttribute("postData");//수정 전 데이터
-		String prevPage = request.getHeader("Referer");
+		//ResultSet postData = (ResultSet)request.getAttribute("postData");//수정 전 데이터
+		//String prevPage = request.getHeader("Referer");
 		String nextPage = (String)userSession.getAttribute("nextPage");
 		
 		//request set
-		userSession.setAttribute("prevPage", prevPage);
+		//userSession.setAttribute("prevPage", prevPage);
 		if(nextPage==null) {//홈에서 로그인 시도했을 경우
 			nextPage = "/";
 			userSession.setAttribute("nextPage", nextPage);
@@ -48,13 +48,15 @@ public class LoginServlet extends HttpServlet {
 		
 		//로그인 상태일 경우 바로 응답
 		if(loginCheck!=null && loginCheck) {
-			dispatcher = context.getRequestDispatcher(nextPage);
+			request.setAttribute("contentPage", nextPage);
+			dispatcher = context.getRequestDispatcher("/views/index.jsp");
 			dispatcher.forward(request, response);
 			return;
 		}
 		//로그일 상태가 아닐 경우 로그인 페이지로 이동
 		else if(isEmpty(userId) || loginCheck==false || loginCheck==null) {
-			dispatcher = context.getRequestDispatcher("/views/login.jsp");
+			request.setAttribute("contentPage", "/views/contents/login.jsp");
+			dispatcher = context.getRequestDispatcher("/views/index.jsp");
 			dispatcher.forward(request, response);
 			return;
 		}
@@ -79,42 +81,50 @@ public class LoginServlet extends HttpServlet {
 		if(isEmpty(idParam) || isEmpty(pwdParam)) {//빈칸오류
 			System.out.println("빈칸 오류");
 			userSession.setAttribute("loginCheck", false);
-			dispatcher = context.getRequestDispatcher("/views/login.jsp");
+			request.setAttribute("contentPage", "/views/contents/login.jsp");
+			dispatcher = context.getRequestDispatcher("/views/index.jsp");
 			dispatcher.forward(request, response);//기존 req,res 정보 유지
 			return;
 		}
 		
-		//db 접근하여 user정보 일치 여부 확인 (일치->if, 불일치->elseif)
+		//db 접근하여 user정보 일치 여부 확인 
 		UserDao userDao = new UserDao();
 		ResultSet user = userDao.getUserById(idParam, pwdParam);
 		String userId=null;
 		String userPwd=null;
 		
 		try {
-			if(!user.next()) {//user==null로 확인하면 안됨.
+			Boolean check = user.next();
+			if(!check) {//user==null로 확인하면 안됨.
 				System.out.println("로그인 실패");
 				userSession.setAttribute("loginCheck", false);
-				dispatcher = context.getRequestDispatcher("/views/login.jsp");
+				request.setAttribute("contentPage", "/views/contents/login.jsp");
+				dispatcher = context.getRequestDispatcher("/views/index.jsp");
 				dispatcher.forward(request, response);//기존 req,res 정보 유지
 				return;
 			}
-			
-			userId = user.getString("id");
-			userPwd = user.getString("pwd");
+
+			else if(check){
+				//로그인 성공(user!=null는 오류)
+				userId = user.getString("id");
+				//userPwd = user.getString("pwd");
+				
+				userSession.setAttribute("loginCheck", true); //로그인상태->세션
+				userSession.setAttribute("userId",userId);
+				
+				String nextPage = (String)userSession.getAttribute("nextPage");//성공 후 이동할 이후페이지
+				   
+				request.setAttribute("contentPage", nextPage);
+				dispatcher = context.getRequestDispatcher("/views/index.jsp");
+				dispatcher.forward(request, response);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		System.out.println(userId+userPwd);
 		
-		//String prevPage = (String)userSession.getAttribute("prevPage");//성공 후 이동할 이전페이지
-		String nextPage = (String)userSession.getAttribute("nextPage");//성공 후 이동할 이후페이지
-		if(user!=null) {//로그인 성공(user!=null는 오류)
-			userSession.setAttribute("loginCheck", true); //로그인상태->세션
-			userSession.setAttribute("userId",userId);
-			//response.sendRedirect(prevPage);//이전페이지로 이동
-			dispatcher = context.getRequestDispatcher(nextPage);
-			dispatcher.forward(request, response);
-		}
+		
+		
 	} 
 	
 	private boolean isEmpty(String str){

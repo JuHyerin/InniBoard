@@ -29,10 +29,6 @@ public class PostDeleteServlet extends HttpServlet {
 		//get
 		int postId = Integer.parseInt(request.getParameter("postid"));
 		
-		//set
-		HttpSession userSession = request.getSession();	
-		userSession.setAttribute("nextPage", "/");
-		
 		//delete
 		PostDao postDao = new PostDao();
 		postDao.deletePost(postId);
@@ -40,15 +36,11 @@ public class PostDeleteServlet extends HttpServlet {
 		//dispatcher
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/login");	
-		dispatcher.forward(request, response);
+	
 		
-		/*ServletContext context = getServletContext();
-		RequestDispatcher dispatcher;
 		dispatcher = context.getRequestDispatcher("/");
-		
-		dispatcher.forward(request, response);*/
-		
+		dispatcher.forward(request, response);
+
 		
 		
 	}

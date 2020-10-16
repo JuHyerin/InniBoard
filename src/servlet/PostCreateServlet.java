@@ -26,7 +26,7 @@ public class PostCreateServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		
 		HttpSession userSession = request.getSession();		
-		userSession.setAttribute("nextPage", "/views/postForm.jsp");
+		userSession.setAttribute("nextPage", "/views/contents/postForm.jsp");
 		
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
