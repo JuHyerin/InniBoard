@@ -1,4 +1,4 @@
-package servlet;
+package postServlet;
 
 import java.io.IOException;
 
@@ -11,33 +11,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.PostDao;
 
-@WebServlet("/create")
-public class PostCreateServlet extends HttpServlet {
+@WebServlet("/delete")
+public class PostDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-    public PostCreateServlet() {
+    public PostDeleteServlet() {
         super();
     }
 
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		
-		HttpSession userSession = request.getSession();		
-		userSession.setAttribute("nextPage", "/views/contents/postForm.jsp");
+		//get
+		int postId = Integer.parseInt(request.getParameter("postid"));
 		
-		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/login");	
-		dispatcher.forward(request, response);
+		//delete
+		PostDao postDao = new PostDao();
+		postDao.deletePost(postId);
+		
+		response.sendRedirect(request.getContextPath() + "/");
 		
 	}
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

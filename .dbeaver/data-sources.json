@@ -19,6 +19,19 @@
 			}
 		}
 	},
+	"virtual-models": {
+		"mariaDB-174f7ff518f-67e1169c71f2c4ef": {
+			"jspdb": {
+				":comment": {
+					"properties": {
+						"erd.diagram.state": {
+							"serialized": "<diagram version=\"1\" name=\"comment\" time=\"202010191632\"><entities><data-source id=\"mariaDB-174f7ff518f-67e1169c71f2c4ef\"><entity id=\"1\" name=\"comment\" fq-name=\"jspdb.comment\" order=\"0\" color-bg=\"255,128,64\" x=\"580\" y=\"26\"><path name=\"jspdb\"/></entity><entity id=\"2\" name=\"post\" fq-name=\"jspdb.post\" order=\"1\" x=\"0\" y=\"0\"><path name=\"jspdb\"/></entity><entity id=\"3\" name=\"user\" fq-name=\"jspdb.`user`\" order=\"2\" x=\"288\" y=\"296\"><path name=\"jspdb\"/></entity></data-source></entities><relations><relation name=\"comment_FK\" fq-name=\"jspdb.comment.comment_FK\" type=\"fk\" pk-ref=\"2\" fk-ref=\"1\"/><relation name=\"comment_FK_1\" fq-name=\"jspdb.comment.comment_FK_1\" type=\"fk\" pk-ref=\"3\" fk-ref=\"1\"/><relation name=\"post_FK\" fq-name=\"jspdb.post.post_FK\" type=\"fk\" pk-ref=\"3\" fk-ref=\"2\"/></relations></diagram>"
+						}
+					}
+				}
+			}
+		}
+	},
 	"connection-types": {
 		"dev": {
 			"name": "Development",

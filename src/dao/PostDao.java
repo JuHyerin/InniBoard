@@ -56,7 +56,7 @@ public class PostDao {
 	public int countAllPost() {
 		db.connectDatabase();
 		
-		String sql = "select count(*) from post";
+		String sql = "select count(*) from post where is_deleted=0";
 		Statement stmt = null;
 		int count = 0;
         ResultSet rs;
@@ -78,7 +78,10 @@ public class PostDao {
 	public ResultSet getPagedPost(int startIndex, int size) {
 		db.connectDatabase();
 		
-		String sql = "select post_id, title, writer, updated_at from post where is_deleted=0 order by updated_at desc limit " + startIndex +","+ size;
+		String sql = "select post_id, title, writer, updated_at "
+				+ "from post "
+				+ "where is_deleted=0 "
+				+ "order by updated_at desc limit " + startIndex +","+ size;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {

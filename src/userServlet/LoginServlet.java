@@ -1,4 +1,4 @@
-package servlet;
+package userServlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
