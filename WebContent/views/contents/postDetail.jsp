@@ -87,7 +87,7 @@ td#contents{
 		<button type="button" onclick="goBeginPage()">처음</button>
 		<button type="button" onclick="goPreviousBlock()">이전</button>
 		<c:forEach var="page" begin="${paging.startPageNo}" end="${paging.endPageNo}">
-			<a href="${pageContext.request.contextPath}/?page=${page}">${page}</a>
+			<a href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&page=${page}">${page}</a>
 		</c:forEach>
 		<button type="button" onclick="goNextBlock()">이후</button>	
 		<button type="button" onclick="goFinalPage()">끝</button>

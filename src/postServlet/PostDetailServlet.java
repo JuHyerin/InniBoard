@@ -44,12 +44,13 @@ public class PostDetailServlet extends HttpServlet {
 			pageParam = "1"; //초기화
 		}
 		page = Integer.parseInt(pageParam);
-		
+		int blockSize = 3;
+		int pageSize = 5;
 		
 		CommentDao commentDao = new CommentDao();
-		int commentSize = commentDao.countAllComment();
+		int commentSize = commentDao.countAllComment(postId);
 		if(commentSize>0) {//댓글 있을 경우에만 페이징함 ->request객체:paging,commnets
-			Paging paging = new Paging(page);//현재페이지 페이징객체 생성
+			Paging paging = new Paging(page, pageSize, blockSize);//현재페이지 페이징객체 생성
 			paging.setTotalData(commentSize); //페이징객체 설정
 			paging.setPageSize(5);
 			

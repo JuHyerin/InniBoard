@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		////로그인: 성공->이전페이지, 실패->로그인페이지
+		////로그인: 성공->다음페이지, 실패->로그인페이지
 		
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");

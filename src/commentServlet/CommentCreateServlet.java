@@ -31,6 +31,9 @@ public class CommentCreateServlet extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		
 		HttpSession userSession = request.getSession();
 		String userId = (String)userSession.getAttribute("userId");
 		String comment = request.getParameter("comment");
@@ -40,9 +43,9 @@ public class CommentCreateServlet extends HttpServlet {
 		CommentDao commentDao = new CommentDao();
 		commentDao.insertComment(postId, userId, comment);
 		
-		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher = context.getRequestDispatcher(request.getContextPath()+"/postDetail?postid="+postIdParm);
-		dispatcher.forward(request, response);
+		
+		response.sendRedirect(request.getContextPath()+"/postDetail?postid="+postId);
+		
 	}
 
 }

@@ -13,7 +13,7 @@ public class CommentDao {
 	private DataBase db = new DataBase();
 	public void	insertComment(int postId, String writer, String comment) {
 		db.connectDatabase();
-		String sql = "insert into comment (post_id, writer, created_at, updated_at, contents) values (?,?,?,?,?)";
+		String sql = "insert into comment (post_id, writer, created_at, updated_at, comment) values (?,?,?,?,?)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = db.getConn().prepareStatement(sql);
@@ -52,10 +52,10 @@ public class CommentDao {
 		return rs;
 	}
 	
-	public int countAllComment() {
+	public int countAllComment(int postId) {
 		db.connectDatabase();
 		
-		String sql = "select count(*) from comment where is_deleted=0";
+		String sql = "select count(*) from comment where is_deleted=0 and post_id="+postId;
 		Statement stmt = null;
 		int count = 0;
         ResultSet rs;
@@ -70,7 +70,7 @@ public class CommentDao {
 			e.printStackTrace();
 		}        
 		db.disconnectDataBase();
-		
+		System.out.println(count);
 		return count;
 	}
 	

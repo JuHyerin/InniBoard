@@ -12,9 +12,11 @@ public class Paging {
 	private int totalData; //총 데이터 수 
 	private int startData; //페이지 시작 행
 	
-	public Paging(int page) {
+	public Paging(int page, int pageSize, int blockSize) {
 		// TODO Auto-generated constructor stub
 		this.pageNo = page;
+		this.pageSize = pageSize;
+		this.blockSize = blockSize;
 	}
 	public int getPageNo() {
 		return pageNo;
@@ -71,8 +73,6 @@ public class Paging {
 		if(this.totalData == 0) {//게시글이 없는 경우
 			return;
 		}
-		this.setBlockSize(3);
-		this.setPageSize(3);
 		this.totalPages = (this.totalData + (this.pageSize-1)) / this.pageSize; //총페이지 
 		this.setFirstData((this.pageNo - 1) * this.pageSize); //출력될 첫 데이터
 		

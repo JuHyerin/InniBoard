@@ -45,7 +45,7 @@ public class SearchServlet extends HttpServlet {
 		
 		PostDao postDao = new PostDao();
 		
-		Paging paging = new Paging(page);//泅犁其捞瘤 其捞隆按眉 积己
+		Paging paging = new Paging(page,3,3);//泅犁其捞瘤 其捞隆按眉 积己
 		paging.setTotalData(postDao.countSearchedPost(option, word)); //其捞隆按眉 汲沥
 		
 		//set request

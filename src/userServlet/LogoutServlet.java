@@ -21,9 +21,11 @@ public class LogoutServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//로그아웃->이전페이지(이전페이지가 로그인폼인 경우, 지정해둔 다음페이지로 이동)
+		
 		HttpSession userSession = request.getSession();
 		String prevPage = request.getHeader("Referer");//이전페이지
-		//String nextPage = (String)userSession.getAttribute("nextPage");
+		String nextPage = (String)userSession.getAttribute("nextPage");//이전페이지가 로그인폼인 경우 대비
 		System.out.println(prevPage);
 		if((Boolean)userSession.getAttribute("loginCheck") || userSession.getAttribute("loginCheck")!=null) {
 			//로그인 상태->로그아웃
@@ -31,9 +33,12 @@ public class LogoutServlet extends HttpServlet {
 			//userSession.setAttribute("loginCheck", false); //로그아웃상태->세션
 			//userSession.setAttribute("userId",null);
 		}
+		if(prevPage.equals("http://localhost:8080/InniBoard/login")) {//이전페이지가 로그인 폼인 경우 다음 페이지로 돌아가기
+			response.sendRedirect(request.getContextPath() + nextPage); //detail에서 로그아웃하면 디테일로 돌아가기
+			return;
+		}
 		response.sendRedirect(prevPage);//이전페이지로 이동
-		//response.sendRedirect(request.getContextPath() + nextPage); //detail에서 로그아웃하면 디테일로 돌아가기
-	
+		return;
 	}
 
 
