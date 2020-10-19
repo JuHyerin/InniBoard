@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>Login Page</title>
 </head>
 <body>
 	<form action="${pageContext.request.contextPath}/login" method="post">

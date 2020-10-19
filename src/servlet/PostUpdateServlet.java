@@ -29,12 +29,13 @@ public class PostUpdateServlet extends HttpServlet {
 		
 		//request get
 		int postId = Integer.parseInt(request.getParameter("postid"));
+		HttpSession userSession = request.getSession();
 		
 		//request set
 		PostDao postDao = new PostDao();
 		request.setAttribute("postData", postDao.getContentsById(postId));
 		request.setAttribute("contentPage", "/views/contents/postForm.jsp");
-		
+		//userSession.setAttribute(name, value);
 		//dispatcher
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
@@ -56,11 +57,7 @@ public class PostUpdateServlet extends HttpServlet {
 		else {//update
 			postDao.updatePost(postId, request.getParameter("title"), request.getParameter("contents"));
 		}
-		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher;
-		dispatcher = context.getRequestDispatcher("/");
-		
-		dispatcher.forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/");
 	}
 
 }

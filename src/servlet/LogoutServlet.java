@@ -24,7 +24,7 @@ public class LogoutServlet extends HttpServlet {
 		HttpSession userSession = request.getSession();
 		String prevPage = request.getHeader("Referer");//이전페이지
 		//String nextPage = (String)userSession.getAttribute("nextPage");
-		
+		System.out.println(prevPage);
 		if((Boolean)userSession.getAttribute("loginCheck") || userSession.getAttribute("loginCheck")!=null) {
 			//로그인 상태->로그아웃
 			userSession.invalidate();

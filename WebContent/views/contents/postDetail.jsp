@@ -17,7 +17,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>Post Detail Page</title>
 </head>
 <style>
 td#name{

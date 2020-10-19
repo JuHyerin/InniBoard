@@ -7,8 +7,8 @@
 <%	request.setCharacterEncoding("utf-8"); %>
 <%	ResultSet post = (ResultSet)request.getAttribute("postData");
 
-	String title="제목작성";
-	String contents="내용작성";
+	String title="제목입력";
+	String contents="내용입력";
 	if(post!=null){
 		post.next();
 		title = post.getString("title");
@@ -19,23 +19,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Post Form</title>
 </head> 
 <body>
 
 <form action="${pageContext.request.contextPath}/update" name="postForm" method="post">
 	<p>
 		<label>제목</label>
-		<input type="text" name="title" value="<%=title%>">
-		<%if(post!=null){ %>
+		<input type="text" name="title" value="<%=title%>" placeholder="제목입력">
+		<%if(post!=null){ //update%>
 		<input type="hidden" name="postid" value="<%=post.getInt("post_id")%>">
-		<%}else{//create or update%>
+		<%}else{//create %>
 		<input type="hidden" name="postid" value="0"> 
 		<%} %>
 	</p>
 	<p>
 		<label>내용</label>
-		<input type="text" name="contents" value="<%=contents%>">
+		<input type="text" name="contents" value="<%=contents%>" placeholder="내용입력">
 		
 	</p>
 	

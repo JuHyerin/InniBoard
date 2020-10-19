@@ -16,7 +16,7 @@ public class PostDao {
 	public ResultSet getAllPost() {
 		db.connectDatabase();
 		
-		String sql = "select post_id, title, writer, created_at from post order by created_at desc;";
+		String sql = "select post_id, title, writer, updated_at from post order by updated_at desc;";
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -33,7 +33,7 @@ public class PostDao {
 		return rs;
 	}
 	
-	public ResultSet getContentsById(int postId) {
+	public ResultSet getContentsById(int postId) { //detail
 		db.connectDatabase();
 		
 		String sql = "select post_id, title, contents, writer, created_at, updated_at from post where post_id=" + postId;
@@ -69,21 +69,16 @@ public class PostDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-        
-        //System.out.println("Total rows : " + count);
-        
+		}        
 		db.disconnectDataBase();
 		
 		return count;
-		
 	}
 
 	public ResultSet getPagedPost(int startIndex, int size) {
 		db.connectDatabase();
 		
-		String sql = "select post_id, title, writer, created_at from post where is_deleted=0 order by created_at desc limit " + startIndex +","+ size;
+		String sql = "select post_id, title, writer, updated_at from post where is_deleted=0 order by updated_at desc limit " + startIndex +","+ size;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -100,21 +95,65 @@ public class PostDao {
 		return rs;
 	}
 	
+	
+	public ResultSet getPagedSearchedPost(String option, String word, int startIndex, int size) {
+		db.connectDatabase();
+		
+		String sql = "select post_id, title, writer, updated_at "
+				+ "from post "
+				+ "where is_deleted=0 and " + option + " like " + "'%"+word+"%'"
+				+ "order by updated_at desc limit " + startIndex +","+ size;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = db.getConn().createStatement();
+			rs = stmt.executeQuery(sql);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.disconnectDataBase();
+		
+		return rs;
+	}
+	
+	public int countSearchedPost(String option, String word) {
+		db.connectDatabase();
+		
+		String sql = "select count(*) from post where is_deleted=0 and " + option + " like " + "'%"+word+"%'";
+		Statement stmt = null;
+		int count = 0;
+        ResultSet rs;
+
+		try {
+			stmt = db.getConn().createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) count = rs.getInt(1);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}        
+		db.disconnectDataBase();
+		
+		return count;
+	}
 	public void	insertPost(String title, String writer, String contents) {
 		db.connectDatabase();
-		String sql = "insert into post (title, writer, created_at, contents) values (?,?,?,?)";
+		String sql = "insert into post (title, writer, created_at, updated_at, contents) values (?,?,?,?,?)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = db.getConn().prepareStatement(sql);
 			pstmt.setString(1, title);
 			pstmt.setString(2, writer);
 			pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-			pstmt.setString(4, contents);
+			pstmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));//작성일로 검색할 때 update기준으로 검색하기 위함
+			pstmt.setString(5, contents);
 			
 			pstmt.executeUpdate();
 			System.out.println("insert 완료");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -124,7 +163,6 @@ public class PostDao {
 	public void updatePost(int postId, String title, String contents) {
 		db.connectDatabase();
 		String sql = "update post set title=?, contents=?, updated_at=? where post_id=?";
-		//String sql = "update post set title=?, contents=? where post_id=?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = db.getConn().prepareStatement(sql);
@@ -136,20 +174,9 @@ public class PostDao {
 			pstmt.executeUpdate();
 			System.out.println("update 완료");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		/*sql = "update post set updated_at=? where post_id=?";
-		try {
-			pstmt = db.getConn().prepareStatement(sql);
-			pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-			pstmt.executeUpdate();
-			System.out.println("update 시간 완료");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 		
 		db.disconnectDataBase();
 	
@@ -157,7 +184,6 @@ public class PostDao {
 
 	public void deletePost(int postId) {
 		db.connectDatabase();
-		//String sql = "delete from post where post_id=?";
 		String sql = "update post set deleted_at=?, is_deleted=1 where post_id=?";
 		PreparedStatement pstmt = null;
 		try {
@@ -167,7 +193,6 @@ public class PostDao {
 			pstmt.executeUpdate();
 			System.out.println("delete 완료");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

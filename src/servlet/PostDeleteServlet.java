@@ -33,15 +33,7 @@ public class PostDeleteServlet extends HttpServlet {
 		PostDao postDao = new PostDao();
 		postDao.deletePost(postId);
 		
-		//dispatcher
-		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher;
-	
-		
-		dispatcher = context.getRequestDispatcher("/");
-		dispatcher.forward(request, response);
-
-		
+		response.sendRedirect(request.getContextPath() + "/");
 		
 	}
 
