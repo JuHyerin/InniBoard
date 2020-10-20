@@ -18,6 +18,11 @@
 	ResultSet comments = (ResultSet)request.getAttribute("comments");
 	Paging paging = (Paging)request.getAttribute("paging");
 	
+	//목록 버튼 누르면 이전 페이지 유지하면서 돌아가기
+	String listPage = (String)request.getAttribute("page");
+	String option = (String)request.getAttribute("option");
+	String word = (String)request.getAttribute("word");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -60,13 +65,19 @@ td#contents{
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/delete?postid=' + <%=post.getInt("post_id")%>">삭제</button>
 </div>
 <%} %>
-<button type="button" onclick="location.href='${pageContext.request.contextPath}/'">목록</button>
+<%if(option!=null || word!=null){ %>
+	<button type="button" 
+	onclick="location.href='${pageContext.request.contextPath}/search?page=<%=listPage%>&search_option=<%=option%>&search_word=<%=word%>'">
+	목록</button>
+<%} else{%>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/'">목록</button>
+<%} %>
 
 
 <div>
 	<%if(session.getAttribute("loginCheck")!=null && (Boolean)session.getAttribute("loginCheck")){ //로그인상태만 댓글 달 수 있음%>
 	<div>
-		<label>댓글달기</label>
+		<label>댓글작성</label>
 		<form action="${pageContext.request.contextPath}/createComment" method="post">
 			<input type="text" name="comment" placeholder="댓글을 입력하세요.">
 			<input type="hidden" name="postId" value="<%=post.getInt("post_id")%>">
@@ -80,16 +91,24 @@ td#contents{
 		<label>작성자:<%=comments.getString("writer") %>/</label>
 		<label>작성일:<%=comments.getTimestamp("updated_at") %></label><br/>
 		<label><%=comments.getString("comment") %></label>
+		<% if(comments.getString("writer").equals(userId)){ %>
+			<button onclick="location.href='${pageContext.request.contextPath}/deleteComment?commentid=<%=comments.getInt("comment_id")%>'">
+			댓글삭제</button>
+		<%} %>
 	</div>
 	<%} %>
 	
 	<div>
 		<button type="button" onclick="goBeginPage()">처음</button>
-		<button type="button" onclick="goPreviousBlock()">이전</button>
+		<%if(paging.getTotalPages()!=1){ %>
+			<button type="button" onclick="goPreviousBlock()">이전</button>
+		<%} %>
 		<c:forEach var="page" begin="${paging.startPageNo}" end="${paging.endPageNo}">
-			<a href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&page=${page}">${page}</a>
+			<a href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&commentpage=${page}">${page}</a>
 		</c:forEach>
-		<button type="button" onclick="goNextBlock()">이후</button>	
+		<%if(paging.getEndPageNo()!=paging.getTotalPages()){ %>
+		<button type="button" onclick="goNextBlock()">이후</button>
+		<%} %>	
 		<button type="button" onclick="goFinalPage()">끝</button>
 	</div>
 	<%} %>
@@ -97,17 +116,28 @@ td#contents{
 
 </body>
 <script type="text/javascript">
+	function goList(page, option, word){
+			/*if(option==null || word==null){
+				location.href="${pageContext.request.contextPath}/";
+			}else{
+				location.href="${pageContext.request.contextPath}/search?page="+page+"&search_option="+option+"&search_word="+word;
+			}*/
+
+			
+		location.href="${pageContext.request.contextPath}/";
+		
+		}
 	function goBeginPage(){
-			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&page=1";
+			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&commentpage=1";
 		}
 	function goPreviousBlock(){
-			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&page=" + (${paging.startPageNo}-1);
+			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&commentpage=" + (${paging.startPageNo}-1);
 		}
 	function goNextBlock(){
-			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&page=" + (${paging.endPageNo}+1);
+			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&commentpage=" + (${paging.endPageNo}+1);
 		}
 	function goFinalPage(){
-			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&page=" + ${paging.totalPages};
+			location.href="${pageContext.request.contextPath}/postDetail?postid=<%=post.getInt("post_id")%>&commentpage=" + ${paging.totalPages};
 		}
 
 	function checkSearchOption(){

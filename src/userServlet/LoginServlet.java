@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.UserDao;
+import util.StringUtil;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -31,12 +32,9 @@ public class LoginServlet extends HttpServlet {
 		Boolean loginCheck = (Boolean)userSession.getAttribute("loginCheck");
 		
 		//request get
-		//ResultSet postData = (ResultSet)request.getAttribute("postData");//수정 전 데이터
-		//String prevPage = request.getHeader("Referer");
 		String nextPage = (String)userSession.getAttribute("nextPage");
 		
 		//request set
-		//userSession.setAttribute("prevPage", prevPage);
 		if(nextPage==null) {//홈에서 로그인 시도했을 경우
 			nextPage = "/";
 			userSession.setAttribute("nextPage", nextPage);
@@ -54,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		//로그일 상태가 아닐 경우 로그인 페이지로 이동
-		else if(isEmpty(userId) || loginCheck==false || loginCheck==null) {
+		else if(StringUtil.isEmpty(userId) || loginCheck==false || loginCheck==null) {
 			request.setAttribute("contentPage", "/views/contents/login.jsp");
 			dispatcher = context.getRequestDispatcher("/views/index.jsp");
 			dispatcher.forward(request, response);
@@ -78,7 +76,7 @@ public class LoginServlet extends HttpServlet {
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;
 		
-		if(isEmpty(idParam) || isEmpty(pwdParam)) {//빈칸오류
+		if(StringUtil.isEmpty(idParam) || StringUtil.isEmpty(pwdParam)) {//빈칸오류
 			System.out.println("빈칸 오류");
 			userSession.setAttribute("loginCheck", false);
 			request.setAttribute("contentPage", "/views/contents/login.jsp");
@@ -91,7 +89,6 @@ public class LoginServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		ResultSet user = userDao.getUserById(idParam, pwdParam);
 		String userId=null;
-		String userPwd=null;
 		
 		try {
 			Boolean check = user.next();
@@ -104,10 +101,9 @@ public class LoginServlet extends HttpServlet {
 				return;
 			}
 
-			else if(check){
+			else {
 				//로그인 성공(user!=null는 오류)
 				userId = user.getString("id");
-				//userPwd = user.getString("pwd");
 				
 				userSession.setAttribute("loginCheck", true); //로그인상태->세션
 				userSession.setAttribute("userId",userId);
@@ -121,17 +117,9 @@ public class LoginServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(userId+userPwd);
-		
-		
-		
+	
 	} 
 	
-	private boolean isEmpty(String str){
-        if(str == null || str.trim().equals("")){
-           return true;
-          }
-          return false;
-    }
+	
 }
 

@@ -53,7 +53,7 @@ public class SearchServlet extends HttpServlet {
 		request.setAttribute("posts", postDao.getPagedSearchedPost(option, word, paging.getFirstData(), paging.getPageSize()));
 		request.setAttribute("option", option);
 		request.setAttribute("word", word);
-		request.setAttribute("contentPage", "/views/contents/postSearch.jsp");
+		request.setAttribute("contentPage", "/views/contents/postList.jsp");
 		
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher;

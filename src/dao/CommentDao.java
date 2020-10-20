@@ -77,7 +77,7 @@ public class CommentDao {
 	public ResultSet getPagedComments(int postId, int startIndex, int size) {
 		db.connectDatabase();
 		
-		String sql = "select writer, updated_at, comment "
+		String sql = "select comment_id, writer, updated_at, comment "
 				+ "from comment "
 				+ "where is_deleted=0 and post_id=? "
 				+ "order by updated_at desc limit ?,?";
@@ -99,5 +99,23 @@ public class CommentDao {
 		db.disconnectDataBase();
 		
 		return rs;
+	}
+
+	public void deleteCommentById(int commentId) {
+		db.connectDatabase();
+		String sql = "update comment set deleted_at=?, is_deleted=1 where comment_id=?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = db.getConn().prepareStatement(sql);
+			pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+			pstmt.setInt(2, commentId);
+			pstmt.executeUpdate();
+			System.out.println("delete ¿Ï·á");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		db.disconnectDataBase();
+		
 	}
 }
